@@ -1,18 +1,33 @@
 package rms.demo.domain;
 
-import javax.persistence.Table;
-import lombok.Data;
-
-/**
- * @author : Meredith
- * @date : 2019-05-07 12:20
- * @description :
- */
-@Data
-@Table(name="permission")
 public class Permission {
+    private Integer permissionId;
 
-    private String permissionId;
     private String permissionName;
+
     private String permissionInfo;
+
+    public Integer getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(Integer permissionId) {
+        this.permissionId = permissionId;
+    }
+
+    public String getPermissionName() {
+        return permissionName;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
+
+    public String getPermissionInfo() {
+        return permissionInfo;
+    }
+
+    public void setPermissionInfo(String permissionInfo) {
+        this.permissionInfo = permissionInfo;
+    }
 }

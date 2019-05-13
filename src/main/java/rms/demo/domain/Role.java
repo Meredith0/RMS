@@ -1,17 +1,33 @@
 package rms.demo.domain;
 
-import javax.persistence.Table;
-import lombok.Data;
-
-/**
- * @author : Meredith
- * @date : 2019-05-07 12:12
- * @description :
- */
-@Data
-@Table(name="role")
 public class Role {
-    private Integer userId;
     private Integer roleId;
 
+    private String roleName;
+
+    private String roleInfo;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleInfo() {
+        return roleInfo;
+    }
+
+    public void setRoleInfo(String roleInfo) {
+        this.roleInfo = roleInfo;
+    }
 }
