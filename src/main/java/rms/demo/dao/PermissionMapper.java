@@ -1,6 +1,7 @@
 package rms.demo.dao;
 
 import java.util.List;
+import lombok.Data;
 import org.apache.ibatis.annotations.Param;
 import rms.demo.domain.Permission;
 import rms.demo.domain.PermissionExample;

@@ -120,6 +120,7 @@
   </insert>
   <select id="countByExample" parameterType="rms.demo.domain.PermissionExample" resultType="java.lang.Integer">
     select count(*) from permission
+    <trim prefix = "" prefixOverrides = "" suffix = "" suffixOverrides = ""/>
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

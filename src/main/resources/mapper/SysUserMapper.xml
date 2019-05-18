@@ -2,80 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace = "rms.demo.dao.SysUserMapper">
-  <delete id = "deleteByPrimaryKey" parameterType = "java.lang.Integer">
-    DELETE
-    FROM sys_user
-    WHERE id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id = "deleteByExample" parameterType = "rms.demo.domain.SysUserExample">
-    delete from sys_user
-    <if test = "_parameter != null">
-      <include refid = "Example_Where_Clause"/>
-    </if>
-  </delete>
-
-  <insert id = "insert" parameterType = "rms.demo.domain.SysUser">
-    INSERT INTO sys_user (id, username, password)
-    VALUES (#{id,jdbcType=INTEGER}, #{username,jdbcType=CHAR}, #{password,jdbcType=CHAR})
-  </insert>
-  <insert id = "insertSelective" parameterType = "rms.demo.domain.SysUser">
-    insert into sys_user
-    <trim prefix = "(" suffix = ")" suffixOverrides = ",">
-      <if test = "id != null">
-        id,
-      </if>
-      <if test = "username != null">
-        username,
-      </if>
-      <if test = "password != null">
-        password,
-      </if>
-    </trim>
-    <trim prefix = "values (" suffix = ")" suffixOverrides = ",">
-      <if test = "id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test = "username != null">
-        #{username,jdbcType=CHAR},
-      </if>
-      <if test = "password != null">
-        #{password,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
   <resultMap id = "BaseResultMap" type = "rms.demo.domain.SysUser">
     <id column = "id" jdbcType = "INTEGER" property = "id"/>
     <result column = "username" jdbcType = "CHAR" property = "username"/>
     <result column = "password" jdbcType = "CHAR" property = "password"/>
   </resultMap>
-  <select id = "selectByExample" parameterType = "rms.demo.domain.SysUserExample"
-    resultMap = "BaseResultMap">
-    select
-    <if test = "distinct">
-      distinct
-    </if>
-    <if test = "_parameter != null">
-      <include refid = "Example_Where_Clause"/>
-    </if>
-    from sys_user
-    <if test = "orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <include refid = "Base_Column_List"/>
-  </select>
-  <select id = "selectByPrimaryKey" parameterType = "java.lang.Integer" resultMap = "BaseResultMap">
-    select
-    <include refid = "Base_Column_List"/>
-    from sys_user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id = "countByExample" parameterType = "rms.demo.domain.SysUserExample"
-    resultType = "java.lang.Integer">
-    select count(*) from sys_user
-    <if test = "_parameter != null">
-      <include refid = "Example_Where_Clause"/>
-    </if>
-  </select>
   <sql id = "Example_Where_Clause">
     <where>
       <foreach collection = "oredCriteria" item = "criteria" separator = "or">
@@ -139,11 +70,107 @@
   <sql id = "Base_Column_List">
     id, username, password
   </sql>
+  <select id = "selectByExample" parameterType = "rms.demo.domain.SysUserExample"
+    resultMap = "BaseResultMap">
+    select
+    <if test = "distinct">
+      distinct
+    </if>
+    <include refid = "Base_Column_List"/>
+    from sys_user
+    <if test = "_parameter != null">
+      <include refid = "Example_Where_Clause"/>
+    </if>
+    <if test = "orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id = "selectByPrimaryKey" parameterType = "java.lang.Integer" resultMap = "BaseResultMap">
+    select
+    <include refid = "Base_Column_List"/>
+    from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id = "deleteByPrimaryKey" parameterType = "java.lang.Integer">
+    delete from sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id = "deleteByExample" parameterType = "rms.demo.domain.SysUserExample">
+    delete from sys_user
+    <if test = "_parameter != null">
+      <include refid = "Example_Where_Clause"/>
+    </if>
+  </delete>
+  <insert id = "insert" parameterType = "rms.demo.domain.SysUser">
+    insert into sys_user (id, username, password
+    )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=CHAR}, #{password,jdbcType=CHAR}
+    )
+  </insert>
+  <insert id = "insertSelective" parameterType = "rms.demo.domain.SysUser">
+    insert into sys_user
+    <trim prefix = "(" suffix = ")" suffixOverrides = ",">
+      <if test = "id != null">
+        id,
+      </if>
+      <if test = "username != null">
+        username,
+      </if>
+      <if test = "password != null">
+        password,
+      </if>
+    </trim>
+    <trim prefix = "values (" suffix = ")" suffixOverrides = ",">
+      <if test = "id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test = "username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test = "password != null">
+        #{password,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id = "countByExample" parameterType = "rms.demo.domain.SysUserExample"
+    resultType = "java.lang.Integer">
+    select count(*) from sys_user
+    <if test = "_parameter != null">
+      <include refid = "Example_Where_Clause"/>
+    </if>
+  </select>
+
+  <resultMap id = "user_role_result" type = "rms.demo.domain.SysUser">
+    <id property = "username" column = "a"/>
+    <result property = "password" column = "password"/>
+    <!--角色集合-->
+    <collection property = "roles"  ofType="rms.demo.domain.Role">
+      <id property = "roleId" column = "role_id"/>
+      <result property = "roleName" column = "role_name" />
+    </collection>
+  </resultMap>
+  <select id = "findUserAndRoleByUsername" resultMap="user_role_result" parameterType="string">
+    SELECT sys_user.username as a, sys_user.password,role.role_id, role.role_name
+    FROM sys_user
+           JOIN user_role ON user_role.user_id = sys_user.id
+           JOIN role  ON role.role_id=user_role.role_id
+    WHERE sys_user.username = #{username};
+  </select>
+
+  <resultMap id = "findRoleById" type = "rms.demo.domain.SysUser" >
+    <id property = "username" column = "username" jdbcType="CHAR" javaType="String"/>
+    <result property = "password" column = "password" jdbcType="CHAR" javaType="String"/>
+  </resultMap>
+  <select id = "findRoleById" resultMap="findRoleById">
+    SELECT sys_user.username, sys_user.password
+    FROM sys_user
+           JOIN user_role ON user_role.user_id = sys_user.id
+           JOIN role  ON role.role_id=user_role.role_id
+    WHERE sys_user.id = #{id};
+  </select>
+
   <update id = "updateByExampleSelective" parameterType = "map">
     update sys_user
-    <if test = "_parameter != null">
-      <include refid = "Update_By_Example_Where_Clause"/>
-    </if>
     <set>
       <if test = "record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -155,6 +182,9 @@
         password = #{record.password,jdbcType=CHAR},
       </if>
     </set>
+    <if test = "_parameter != null">
+      <include refid = "Update_By_Example_Where_Clause"/>
+    </if>
   </update>
   <update id = "updateByExample" parameterType = "map">
     update sys_user
@@ -178,9 +208,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id = "updateByPrimaryKey" parameterType = "rms.demo.domain.SysUser">
-    UPDATE sys_user
-    SET username = #{username,jdbcType=CHAR},
-        password = #{password,jdbcType=CHAR}
-    WHERE id = #{id,jdbcType=INTEGER}
+    update sys_user
+    set username = #{username,jdbcType=CHAR},
+    password = #{password,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

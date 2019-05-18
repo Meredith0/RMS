@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import rms.demo.dao.UserDao;
-import rms.demo.domain.entity.User;
+import rms.demo.dao.SysUserMapper;
+import rms.demo.domain.SysUser;
 
 /**
  * @author : Meredith
@@ -17,7 +17,7 @@ import rms.demo.domain.entity.User;
 public class MyCustomUserService implements UserDetailsService {
 
     @Autowired
-    private UserDao userMapper;
+    private SysUserMapper userMapper;
 
     /**
      * 登陆验证时，通过username获取用户的所有权限信息
@@ -25,9 +25,9 @@ public class MyCustomUserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userDetail = new User();
+        SysUser userDetail = new SysUser();
         userDetail.setUsername(username);
-        User user = userMapper.loadUserByUsername(username);
+        SysUser user = userMapper.selectByPrimaryKey(1);
         System.out.println(user.getPassword());
         userDetail.setPassword(user.getPassword());
         return userDetail;

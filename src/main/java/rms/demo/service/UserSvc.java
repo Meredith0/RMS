@@ -1,14 +1,11 @@
 package rms.demo.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import rms.demo.dao.UserDao;
-import rms.demo.domain.Role;
-import rms.demo.domain.entity.User;
+import rms.demo.dao.SysUserMapper;
 
 /**
  * @author : Meredith
@@ -19,7 +16,7 @@ import rms.demo.domain.entity.User;
 public class UserSvc implements UserDetailsService {
 
     @Autowired
-    UserDao userMapper;
+    SysUserMapper userMapper;
 
     // /**
     //  * 登陆验证
@@ -40,14 +37,4 @@ public class UserSvc implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return null;
     }
-    //
-    // public List<Role> findRoleByUsername(String username) {
-    //     userMapper.findRoleByUsername(username);
-    //     if
-    // }
-
-    // @Override
-    // public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    //     userMapper.selectOneByExample()
-    // }
 }

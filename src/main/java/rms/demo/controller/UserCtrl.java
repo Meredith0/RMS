@@ -32,9 +32,5 @@ public class UserCtrl {
     //     return empSvc.loginVerify(username, password);
     // }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("eventName", "FIFA 2018");
-        return "index";
-    }
+
 }

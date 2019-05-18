@@ -1,14 +1,21 @@
 package rms.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import rms.demo.dao.RoleMapper;
+import rms.demo.dao.SysUserMapper;
+import rms.demo.domain.Permission;
+import rms.demo.domain.Role;
+import rms.demo.domain.SysUser;
 
 /**
  * @author : Meredith
@@ -18,35 +25,40 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiUserDetailsService implements UserDetailsService {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    SysUserMapper userMapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    RoleMapper roleMapper;
 
-    // /*
-    //  * (non-Javadoc)
-    //  *
-    //  * @see org.springframework.security.core.userdetails.UserDetailsService#
-    //  * loadUserByUsername(java.lang.String)
-    //  */
-    // // 这里的username 可以是username、mobile、email
-    // public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    //     logger.info("表单登录用户名:" + username);
-    //     return buildUser(username);
-    // }
-    //
-    // private SocialUser buildUser(String userId) {
-    //     // 根据用户名查找用户信息
-    //     //根据查找到的用户信息判断用户是否被冻结
-    //     String password = passwordEncoder.encode("123456");
-    //     logger.info("数据库密码是:" + password);
-    //     return new SocialUser(userId, password,
-    //         true, true, true, true,
-    //         AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
-    // }
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String username) {
+
+        //获取用户信息和角色
+        SysUser userAndRole = userMapper.findUserAndRoleByUsername(username);
+        if (userAndRole == null) {
+            return null;
+        }
+        //获取角色
+        List<Role> roles = userAndRole.getRoles();
+        //获取角色的role_id
+        List<Integer> ids = roles.stream().map(Role::getRoleId).collect(Collectors.toList());
+
+        //if (user.isPresent()) {
+        List<Permission> permissions = roleMapper.findPermissionByRoleId(ids);
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Permission permission : permissions) {
+            if (permission != null && permission.getPermissionName() != null) {
+
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getPermissionName());
+                //此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority 对象。
+                grantedAuthorities.add(grantedAuthority);
+            }
+        }
+        return new SysUser(userAndRole.getUsername(), userAndRole.getPassword(), grantedAuthorities);
+        // } else {
+        //     throw new UsernameNotFoundException("admin: " + username + " do not exist!");
+        // }
     }
 }
