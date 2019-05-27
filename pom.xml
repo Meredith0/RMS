@@ -118,11 +118,11 @@
       <version>5.3.2</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.security.oauth</groupId>
-      <artifactId>spring-security-oauth2</artifactId>
-      <version>2.3.4.RELEASE</version>
-    </dependency>
+    <!--<dependency>-->
+    <!--  <groupId>org.springframework.security.oauth</groupId>-->
+    <!--  <artifactId>spring-security-oauth2</artifactId>-->
+    <!--  <version>2.3.4.RELEASE</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
@@ -155,11 +155,6 @@
       <artifactId>jaxb-api</artifactId>
       <version>2.3.1</version>
     </dependency>
-    <!--<dependency>-->
-    <!--  <groupId>org.springframework.boot</groupId>-->
-    <!--  <artifactId>spring-boot-autoconfigure</artifactId>-->
-    <!--  <version>1.5.6.RELEASE</version>-->
-    <!--</dependency>-->
 
 
   </dependencies>
