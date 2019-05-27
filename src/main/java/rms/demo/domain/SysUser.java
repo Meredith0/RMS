@@ -14,7 +14,6 @@ public class SysUser implements UserDetails {
     private String password;
     private List<Role> roles;
     private List<Permission> permissions;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public SysUser() {}
@@ -28,7 +27,16 @@ public class SysUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+
+        // List<Role> roles = this.getRoles();
+        // for (Role role : roles) {
+        //     Authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        // }
+         return authorities;
+        // return roles.stream()
+        //            .map(Role :: getRoleName)
+        //            .map(SimpleGrantedAuthority :: new)
+        //            .collect(Collectors.toList());
     }
 
     @Override

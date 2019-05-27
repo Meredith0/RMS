@@ -1,36 +1,35 @@
 package rms.demo.controller;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import rms.demo.service.UserSvc;
+import org.springframework.web.bind.annotation.RestController;
+import rms.demo.service.UserService;
 
 /**
  * @author : Meredith
  * @date : 2019-05-06 20:55
  * @description :
  */
-@Controller
+@RestController()
 public class UserCtrl {
 
     @Autowired
-    UserSvc empSvc;
+    UserService userService;
 
-    // /**
-    //  * 登陆请求转发
-    //  * @param username
-    //  * @param password
-    //  * @return 是否验证通过
-    //  */
-    // @RequestMapping(value = "/login", method = RequestMethod.POST)
-    // public boolean loginVerify(@RequestParam(value = "username") String username,
-    //     @RequestParam(value = "password") String password) {
-    //     return empSvc.loginVerify(username, password);
-    // }
+    @RequestMapping(value = "/signin",method =RequestMethod.POST)
+    public String login(@RequestBody Map<String,String>userDetail) {
+        String username = userDetail.get("username");
+        String password = userDetail.get("password");
+
+        return userService.signin(username, password);
+    }
 
 
+    @RequestMapping(value = "hello", method = RequestMethod.GET)
+    public String Auth() {
+        return "HELLO";
+    }
 }

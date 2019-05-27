@@ -10,14 +10,19 @@ import rms.demo.domain.SysUserExample;
 @Mapper
 public interface SysUserMapper {
 
-    SysUser findUserAndRoleByUsername(String username);
+    List<SysUser> findUserAndRoleByUsername(String username);
 
     SysUser findRoleById(int id);
+
+    SysUser findRoleByUsername(String username);
 
 
     @Select("SELECT * FROM sys_user")
     List<SysUser> selectAll();
 
+    boolean existByUsername(@Param("username") String username);
+
+    SysUser find(String username);
     ///////////////////////////////////////////////////////////////
     int countByExample(SysUserExample example);
 

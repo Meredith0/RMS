@@ -10,9 +10,23 @@ spring:
         #连接超时时间(毫秒)
         timeout: 2000
         database: 0
+    jackson:
+        serialization:
+            indent_output: true
+
 
 mybatis:
     configuration:
         #    开启驼峰映射
         map-underscore-to-camel-case: true
     mapper-locations: classpath*:mapper/*.xml
+
+logging:
+    level:
+        org.springframework.security: info
+
+security:
+    jwt:
+        token:
+            secret-key: secret-key
+            expire-length: 300000 # 5

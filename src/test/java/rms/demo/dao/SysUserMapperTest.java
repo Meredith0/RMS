@@ -1,6 +1,5 @@
 package rms.demo.dao;
 
-import io.lettuce.core.output.ScanOutput;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class SysUserMapperTest {
 
     @Test
     void test01(){
-       SysUser user = userMapper.findUserAndRoleByUsername("张三");
+       List<SysUser> user = userMapper.findUserAndRoleByUsername("张三");
         //System.out.println(user.get(0)+"   "+user.get(1));
         System.out.println(user.toString());
     }
@@ -50,10 +49,10 @@ class SysUserMapperTest {
 
     @Test
     void test03(){
-        SysUser userAndRole = userMapper.findUserAndRoleByUsername("张三");
+        List<SysUser> userAndRole = userMapper.findUserAndRoleByUsername("张三");
 
         //获取角色
-        List<Role> roles = userAndRole.getRoles();
+        List<Role> roles = userAndRole.get(0).getRoles();
 
         System.out.println(roles);
         //获取角色的role_id
@@ -63,5 +62,10 @@ class SysUserMapperTest {
         List<Permission> permissions = roleMapper.findPermissionByRoleId(ids);
 
         permissions.forEach(System.out::println);
+    }
+
+    @Test
+    void test04(){
+        System.out.println(userMapper.existByUsername("张三1"));
     }
 }

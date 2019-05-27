@@ -1,4 +1,4 @@
-package rms.demo.service;
+package rms.demo.service.SpringSecurity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import rms.demo.dao.RoleMapper;
 import rms.demo.dao.SysUserMapper;
 import rms.demo.domain.Permission;
@@ -22,8 +22,8 @@ import rms.demo.domain.SysUser;
  * @date : 2019-05-09 21:22
  * @description :
  */
-@Component
-public class ApiUserDetailsService implements UserDetailsService {
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     SysUserMapper userMapper;
@@ -36,14 +36,19 @@ public class ApiUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
 
         //获取用户信息和角色
-        SysUser userAndRole = userMapper.findUserAndRoleByUsername(username);
+        List<SysUser> userAndRole = userMapper.findUserAndRoleByUsername(username);
         if (userAndRole == null) {
             return null;
         }
         //获取角色
-        List<Role> roles = userAndRole.getRoles();
+        //List<Role> roles = userAndRole.stream().forEach(userAndRole.get().getRoles());
+
+        ArrayList<Role> roles = new ArrayList<>();
+        for (SysUser user : userAndRole) {
+             roles.add(user.getRoles().get(0)) ;
+        }
         //获取角色的role_id
-        List<Integer> ids = roles.stream().map(Role::getRoleId).collect(Collectors.toList());
+        List<Integer> ids = roles.stream().map(Role :: getRoleId).collect(Collectors.toList());
 
         //if (user.isPresent()) {
         List<Permission> permissions = roleMapper.findPermissionByRoleId(ids);
@@ -56,7 +61,7 @@ public class ApiUserDetailsService implements UserDetailsService {
                 grantedAuthorities.add(grantedAuthority);
             }
         }
-        return new SysUser(userAndRole.getUsername(), userAndRole.getPassword(), grantedAuthorities);
+        return new SysUser(userAndRole.get(0).getUsername(), userAndRole.get(0).getPassword(), grantedAuthorities);
         // } else {
         //     throw new UsernameNotFoundException("admin: " + username + " do not exist!");
         // }

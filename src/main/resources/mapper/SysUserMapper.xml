@@ -92,8 +92,9 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id = "deleteByPrimaryKey" parameterType = "java.lang.Integer">
-    delete from sys_user
-    where id = #{id,jdbcType=INTEGER}
+    DELETE
+    FROM sys_user
+    WHERE id = #{id,jdbcType=INTEGER}
   </delete>
   <delete id = "deleteByExample" parameterType = "rms.demo.domain.SysUserExample">
     delete from sys_user
@@ -102,10 +103,8 @@
     </if>
   </delete>
   <insert id = "insert" parameterType = "rms.demo.domain.SysUser">
-    insert into sys_user (id, username, password
-    )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=CHAR}, #{password,jdbcType=CHAR}
-    )
+    INSERT INTO sys_user (id, username, password)
+    VALUES (#{id,jdbcType=INTEGER}, #{username,jdbcType=CHAR}, #{password,jdbcType=CHAR})
   </insert>
   <insert id = "insertSelective" parameterType = "rms.demo.domain.SysUser">
     insert into sys_user
@@ -144,29 +143,60 @@
     <id property = "username" column = "a"/>
     <result property = "password" column = "password"/>
     <!--角色集合-->
-    <collection property = "roles"  ofType="rms.demo.domain.Role">
+    <collection property = "roles" ofType = "rms.demo.domain.Role">
       <id property = "roleId" column = "role_id"/>
-      <result property = "roleName" column = "role_name" />
+      <result property = "roleName" column = "role_name"/>
     </collection>
   </resultMap>
-  <select id = "findUserAndRoleByUsername" resultMap="user_role_result" parameterType="string">
-    SELECT sys_user.username as a, sys_user.password,role.role_id, role.role_name
+  <select id = "findUserAndRoleByUsername" resultMap = "user_role_result" parameterType = "string">
+    SELECT sys_user.username, sys_user.password, role.role_id, role.role_name
     FROM sys_user
            JOIN user_role ON user_role.user_id = sys_user.id
-           JOIN role  ON role.role_id=user_role.role_id
+           JOIN role ON role.role_id = user_role.role_id
     WHERE sys_user.username = #{username};
   </select>
 
-  <resultMap id = "findRoleById" type = "rms.demo.domain.SysUser" >
-    <id property = "username" column = "username" jdbcType="CHAR" javaType="String"/>
-    <result property = "password" column = "password" jdbcType="CHAR" javaType="String"/>
+  <resultMap id = "findRoleById" type = "rms.demo.domain.SysUser">
+    <id property = "username" column = "username" jdbcType = "CHAR" javaType = "String"/>
+    <result property = "password" column = "password" jdbcType = "CHAR" javaType = "String"/>
   </resultMap>
-  <select id = "findRoleById" resultMap="findRoleById">
+  <select id = "findRoleById" resultMap = "findRoleById">
     SELECT sys_user.username, sys_user.password
     FROM sys_user
            JOIN user_role ON user_role.user_id = sys_user.id
-           JOIN role  ON role.role_id=user_role.role_id
+           JOIN role ON role.role_id = user_role.role_id
     WHERE sys_user.id = #{id};
+  </select>
+
+
+  <resultMap id = "role_result" type = "rms.demo.domain.SysUser">
+    <id property = "username" column = "a"/>
+    <!--角色集合-->
+    <collection property = "roles" ofType = "rms.demo.domain.Role">
+      <id property = "roleId" column = "role_id"/>
+      <result property = "roleName" column = "role_name"/>
+    </collection>
+  </resultMap>
+  <select id = "findRoleByUsername" resultMap = "role_result">
+    SELECT username AS a, role.role_id, role.role_name
+    FROM sys_user
+           RIGHT JOIN user_role ON user_role.user_id = sys_user.id
+           RIGHT JOIN role ON role.role_id = user_role.role_id
+    WHERE sys_user.username = #{username}
+  </select>
+
+  <select id = "existByUsername" resultType = "boolean">
+    SELECT COUNT(username)
+    FROM sys_user
+    WHERE username = #{username}
+  </select>
+
+  <select id = "find" resultType = "rms.demo.domain.SysUser">
+    <![CDATA[
+    SELECT username
+    FROM sys_user
+    WHERE username = #{username}
+    ]]>
   </select>
 
   <update id = "updateByExampleSelective" parameterType = "map">
@@ -208,9 +238,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id = "updateByPrimaryKey" parameterType = "rms.demo.domain.SysUser">
-    update sys_user
-    set username = #{username,jdbcType=CHAR},
-    password = #{password,jdbcType=CHAR}
-    where id = #{id,jdbcType=INTEGER}
+    UPDATE sys_user
+    SET username = #{username,jdbcType=CHAR},
+        password = #{password,jdbcType=CHAR}
+    WHERE id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
