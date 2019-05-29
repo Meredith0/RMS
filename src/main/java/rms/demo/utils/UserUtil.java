@@ -1,6 +1,7 @@
 package rms.demo.utils;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import rms.demo.domain.SysUser;
 
 /**
@@ -9,7 +10,7 @@ import rms.demo.domain.SysUser;
  * @description : 工具类  用以返回当前用户
  */
 public class UserUtil {
-    public static SysUser getCurrentUser() {
-        return (SysUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public static String getCurrentUser() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
