@@ -1,5 +1,4 @@
 import util from '@/libs/util.js'
-import {AccountLogin} from '@api/sys.login'
 import {postRequest} from "../../../../utils/api";
 
 export default {
@@ -20,7 +19,7 @@ export default {
     }) {
       return new Promise((resolve, reject) => {
         // 开始请求登录接口
-        postRequest("/signin",{username,password})
+        postRequest("/signin", {username, password})
 
         .then(async res => {
           // 设置 cookie 一定要存 uuid 和 token 两个 cookie
@@ -32,7 +31,7 @@ export default {
           util.cookies.set('token', res.data.token);
           // 设置 vuex 用户信息
           await dispatch('d2admin/user/set', {
-            name:res.data.username
+            name: res.data.username
           }, {root: true});
           // 用户登录后从持久化数据加载一系列的设置
           await dispatch('load');

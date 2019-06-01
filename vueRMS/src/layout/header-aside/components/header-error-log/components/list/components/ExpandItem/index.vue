@@ -1,7 +1,7 @@
 <template>
   <div
-    class="d2-error-log-list__expand"
-    :class="className">
+    :class="className"
+    class="d2-error-log-list__expand">
     <p class="d2-error-log-list__expand-title">{{title}}</p>
     <p class="d2-error-log-list__expand-value">{{value === '' ? '无数据' : value}}</p>
     <slot/>
@@ -9,22 +9,23 @@
 </template>
 
 <script>
-export default {
-  props: {
-    type: {
-      default: 'log'
+  export default {
+    props: {
+      type: {
+        default: 'log'
+      },
+      title: {
+        default: ''
+      },
+      value: {
+        default: ''
+      }
     },
-    title: {
-      default: ''
-    },
-    value: {
-      default: ''
-    }
-  },
-  computed: {
-    className () {
-      return this.type === 'log' ? 'd2-error-log-list__expand--log' : 'd2-error-log-list__expand--error'
+    computed: {
+      className() {
+        return this.type === 'log' ? 'd2-error-log-list__expand--log'
+          : 'd2-error-log-list__expand--error'
+      }
     }
   }
-}
 </script>

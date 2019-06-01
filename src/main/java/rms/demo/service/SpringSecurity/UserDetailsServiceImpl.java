@@ -41,8 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
         //获取角色
-        //List<Role> roles = userAndRole.stream().forEach(userAndRole.get().getRoles());
-
         ArrayList<Role> roles = new ArrayList<>();
         for (SysUser user : userAndRole) {
              roles.add(user.getRoles().get(0)) ;
@@ -50,7 +48,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //获取角色的role_id
         List<Integer> ids = roles.stream().map(Role :: getRoleId).collect(Collectors.toList());
 
-        //if (user.isPresent()) {
+
+        if (ids.get(0) == null) {
+            return null;
+        }
         List<Permission> permissions = roleMapper.findPermissionByRoleId(ids);
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Permission permission : permissions) {
@@ -62,8 +63,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
         return new SysUser(userAndRole.get(0).getUsername(), userAndRole.get(0).getPassword(), grantedAuthorities);
-        // } else {
-        //     throw new UsernameNotFoundException("admin: " + username + " do not exist!");
-        // }
     }
 }

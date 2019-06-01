@@ -18,7 +18,7 @@ export default {
      * @description 切换激活状态
      * @param {Object} state vuex state
      */
-    toggle (state) {
+    toggle(state) {
       state.active = !state.active
     },
     /**
@@ -26,7 +26,7 @@ export default {
      * @param {Object} state vuex state
      * @param {Boolean} active active
      */
-    set (state, active) {
+    set(state, active) {
       state.active = active
     },
     /**
@@ -34,21 +34,21 @@ export default {
      * @param {Object} state vuex state
      * @param {Array} menu menu
      */
-    init (state, menu) {
-      const pool = []
+    init(state, menu) {
+      const pool = [];
       const push = function (menu, titlePrefix = []) {
         menu.forEach(m => {
           if (m.children) {
-            push(m.children, [ ...titlePrefix, m.title ])
+            push(m.children, [...titlePrefix, m.title])
           } else {
             pool.push({
               ...m,
-              fullTitle: [ ...titlePrefix, m.title ].join(' / ')
+              fullTitle: [...titlePrefix, m.title].join(' / ')
             })
           }
         })
-      }
-      push(menu)
+      };
+      push(menu);
       state.pool = pool
     }
   }

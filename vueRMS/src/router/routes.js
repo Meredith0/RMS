@@ -39,7 +39,7 @@ const frameIn = [
         hidden: true,
         component: {
           beforeRouteEnter(to, from, next) {
-           next(vm => vm.$router.replace(JSON.parse(from.params.route)))
+            next(vm => vm.$router.replace(JSON.parse(from.params.route)))
           },
           render: h => h()
         }

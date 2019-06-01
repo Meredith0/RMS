@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.transaction.annotation.Transactional;
 import rms.demo.domain.SysUser;
 import rms.demo.domain.SysUserExample;
 
@@ -16,14 +17,14 @@ public interface SysUserMapper {
 
     SysUser findRoleByUsername(String username);
 
-
     @Select("SELECT * FROM sys_user")
     List<SysUser> selectAll();
 
     boolean existByUsername(@Param("username") String username);
 
     SysUser find(String username);
-    ///////////////////////////////////////////////////////////////
+
+    //generated code
     int countByExample(SysUserExample example);
 
     int deleteByExample(SysUserExample example);

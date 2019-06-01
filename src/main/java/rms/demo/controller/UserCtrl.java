@@ -27,6 +27,7 @@ public class UserCtrl {
         Map<String, String> map = new HashMap<>();
         String username = userDetail.get("username");
         String password = userDetail.get("password");
+        System.out.println(username);
         String token= userService.signin(username, password);
         map.put("token", token);
         map.put("username", username);

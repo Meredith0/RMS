@@ -2,7 +2,7 @@
   <div class="page-login">
     <div class="page-login--layer page-login--layer-area">
       <ul class="circles">
-        <li v-for="n in 10" :key="n"></li>
+        <li :key="n" v-for="n in 10"></li>
       </ul>
     </div>
     <div
@@ -23,31 +23,31 @@
           <!-- 表单 -->
           <div class="page-login--form">
             <el-card shadow="never">
-              <el-form ref="loginForm" label-position="top" :rules="rules"
-                       :model="formLogin" size="default">
+              <el-form :model="formLogin" :rules="rules" label-position="top"
+                       ref="loginForm" size="default">
                 <el-form-item prop="username">
-                  <el-input type="text" v-model="formLogin.username"
-                            placeholder="用户名">
-                    <i slot="prepend" class="fa fa-user-circle-o"></i>
+                  <el-input placeholder="用户名" type="text"
+                            v-model="formLogin.username">
+                    <i class="fa fa-user-circle-o" slot="prepend"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input type="password" v-model="formLogin.password"
-                            placeholder="密码">
-                    <i slot="prepend" class="fa fa-keyboard-o"></i>
+                  <el-input placeholder="密码" type="password"
+                            v-model="formLogin.password">
+                    <i class="fa fa-keyboard-o" slot="prepend"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="code">
-                  <el-input type="text" v-model="formLogin.code"
-                            placeholder="- - - -">
+                  <el-input placeholder="- - - -" type="text"
+                            v-model="formLogin.code">
                     <template slot="prepend">验证码</template>
                     <template slot="append">
                       <img class="login-code" src="./image/login-code.png">
                     </template>
                   </el-input>
                 </el-form-item>
-                <el-button size="default" @click="submit" type="primary"
-                           class="button-login">登录
+                <el-button @click="submit" class="button-login" size="default"
+                           type="primary">登录
                 </el-button>
               </el-form>
             </el-card>

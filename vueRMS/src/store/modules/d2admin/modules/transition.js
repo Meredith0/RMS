@@ -13,17 +13,17 @@ export default {
      * @param {Object} state vuex state
      * @param {Boolean} active 新的状态
      */
-    set ({ state, dispatch }, active) {
+    set({state, dispatch}, active) {
       return new Promise(async resolve => {
         // store 赋值
-        state.active = active
+        state.active = active;
         // 持久化
         await dispatch('d2admin/db/set', {
           dbName: 'sys',
           path: 'transition.active',
           value: state.active,
           user: true
-        }, { root: true })
+        }, {root: true});
         // end
         resolve()
       })
@@ -32,7 +32,7 @@ export default {
      * 从数据库读取页面过渡动画设置
      * @param {Object} state vuex state
      */
-    load ({ state, dispatch }) {
+    load({state, dispatch}) {
       return new Promise(async resolve => {
         // store 赋值
         state.active = await dispatch('d2admin/db/get', {
@@ -40,7 +40,7 @@ export default {
           path: 'transition.active',
           defaultValue: setting.transition.active,
           user: true
-        }, { root: true })
+        }, {root: true});
         // end
         resolve()
       })

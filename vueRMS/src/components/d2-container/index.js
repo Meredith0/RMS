@@ -25,24 +25,41 @@ export default {
   },
   computed: {
     // 始终返回渲染组件
-    component () {
-      if (this.type === 'card' && !this.betterScroll) return d2ContainerCard
-      if (this.type === 'card' && this.betterScroll) return d2ContainerCardBs
-      if (this.type === 'ghost' && !this.betterScroll) return d2ContainerGhost
-      if (this.type === 'ghost' && this.betterScroll) return d2ContainerGhostBs
-      if (this.type === 'full' && !this.betterScroll) return d2ContainerFull
-      if (this.type === 'full' && this.betterScroll) return d2ContainerFullBs
-      else {
+    component() {
+      if (this.type === 'card' && !this.betterScroll) {
+        return d2ContainerCard
+      }
+      if (this.type === 'card' && this.betterScroll) {
+        return d2ContainerCardBs
+      }
+      if (this.type === 'ghost' && !this.betterScroll) {
+        return d2ContainerGhost
+      }
+      if (this.type === 'ghost' && this.betterScroll) {
+        return d2ContainerGhostBs
+      }
+      if (this.type === 'full' && !this.betterScroll) {
+        return d2ContainerFull
+      }
+      if (this.type === 'full' && this.betterScroll) {
+        return d2ContainerFullBs
+      } else {
         return 'div'
       }
     }
   },
-  render (h) {
+  render(h) {
     const slots = [
       h('div', this.$slots.default)
-    ]
-    if (this.$slots.header) slots.push(h('div', { slot: 'header' }, [ this.$slots.header ]))
-    if (this.$slots.footer) slots.push(h('div', { slot: 'footer' }, [ this.$slots.footer ]))
+    ];
+    if (this.$slots.header) {
+      slots.push(
+        h('div', {slot: 'header'}, [this.$slots.header]))
+    }
+    if (this.$slots.footer) {
+      slots.push(
+        h('div', {slot: 'footer'}, [this.$slots.footer]))
+    }
     return h('div', {
       ref: 'container',
       class: 'container-component'
@@ -61,18 +78,20 @@ export default {
   },
   methods: {
     // 返回顶部
-    scrollToTop () {
-      this.$refs.component.scrollToTop()
+    scrollToTop() {
+      this.$refs.component.scrollToTop();
       // 如果开启了 better scroll 还需要手动触发一遍 scroll 事件
-      const bs = this.$refs.component.BS
-      if (bs) this.$refs.component.scroll()
+      const bs = this.$refs.component.BS;
+      if (bs) {
+        this.$refs.component.scroll()
+      }
     },
     // 用法同原生方法 scrollBy
-    scrollBy (x = 0, y = 0, time = 300) {
+    scrollBy(x = 0, y = 0, time = 300) {
       if (this.betterScroll) {
-        const bs = this.$refs.component.BS
+        const bs = this.$refs.component.BS;
         if (bs) {
-          bs.scrollBy(-x, -y, time)
+          bs.scrollBy(-x, -y, time);
           // 手动触发一遍 scroll 事件
           this.$refs.component.scroll()
         }
@@ -81,11 +100,11 @@ export default {
       }
     },
     // 用法同原生方法 scrollTo
-    scrollTo (x = 0, y = 0, time = 300) {
+    scrollTo(x = 0, y = 0, time = 300) {
       if (this.betterScroll) {
-        const bs = this.$refs.component.BS
+        const bs = this.$refs.component.BS;
         if (bs) {
-          bs.scrollTo(-x, -y, time)
+          bs.scrollTo(-x, -y, time);
           // 手动触发一遍 scroll 事件
           this.$refs.component.scroll()
         }
@@ -94,11 +113,11 @@ export default {
       }
     },
     // 用法同原生方法 scrollTop
-    scrollTop (top = 0, time = 300) {
+    scrollTop(top = 0, time = 300) {
       if (this.betterScroll) {
-        const bs = this.$refs.component.BS
+        const bs = this.$refs.component.BS;
         if (bs) {
-          bs.scrollTo(bs.x, -top, time)
+          bs.scrollTo(bs.x, -top, time);
           // 手动触发一遍 scroll 事件
           this.$refs.component.scroll()
         }

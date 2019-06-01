@@ -19,7 +19,6 @@ Vue.prototype.$axios = axios;
 
 // 核心插件
 Vue.use(d2Admin);
-
 new Vue({
   router,
   store,

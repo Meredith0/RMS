@@ -6,7 +6,7 @@ import withCredentials from './patch/withCredentials'
 withCredentials(Mock);
 
 /* Mock 默认配置 */
-Mock.setup({ timeout: '200-300' });
+Mock.setup({timeout: '200-300'});
 
 /* 扩展 [生成器] */
 const Generator = (prop, template) => {
@@ -16,7 +16,8 @@ const Generator = (prop, template) => {
 };
 
 /* 扩展 [循环] */
-const Repeat = (num, itemTemplate) => Generator(`data|${num}`, itemTemplate).data;
+const Repeat = (num, itemTemplate) => Generator(`data|${num}`,
+  itemTemplate).data;
 
 const CustomExtends = {
   Generator,
@@ -30,7 +31,7 @@ const extend = (prop, value) => {
 };
 
 /* 装配配置组 */
-const wired = ({ url, type, body }) => ({
+const wired = ({url, type, body}) => ({
   method: type,
   params: qs.parse(url.split('?').length > 1 ? url.split('?')[1] : ''),
   body: JSON.parse(body),
@@ -47,7 +48,7 @@ const setup = (path, method, handle) => {
 };
 
 const load = (collection) => {
-  collection.map(({ path, method, handle }) => {
+  collection.map(({path, method, handle}) => {
     if (method === '*') {
       method = [
         'get',
@@ -61,7 +62,10 @@ const load = (collection) => {
         'patch'
       ]
     }
-    if (typeof method === 'string' && method.indexOf('|') > -1) method = method.split('|');
+    if (typeof method === 'string' && method.indexOf('|')
+      > -1) {
+      method = method.split('|');
+    }
     if (method instanceof Array) {
       method.map(item => setup(path, item, handle))
     } else {
@@ -70,4 +74,4 @@ const load = (collection) => {
   })
 };
 
-export default { setup, load, extend }
+export default {setup, load, extend}

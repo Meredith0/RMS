@@ -1,6 +1,6 @@
 <template>
   <div class="d2-container-card">
-    <div v-if="$slots.header" class="d2-container-card__header" ref="header">
+    <div class="d2-container-card__header" ref="header" v-if="$slots.header">
       <slot name="header"/>
     </div>
     <div class="d2-container-card__body" ref="body">
@@ -8,26 +8,27 @@
         <slot/>
       </div>
     </div>
-    <div v-if="$slots.footer" class="d2-container-card__footer" ref="footer">
+    <div class="d2-container-card__footer" ref="footer" v-if="$slots.footer">
       <slot name="footer"/>
     </div>
   </div>
 </template>
 
 <script>
-import scroll from './mixins/normal'
-export default {
-  name: 'd2-container-card',
-  mixins: [
-    scroll
-  ],
-  mounted () {
-    // 增加滚动事件监听
-    this.addScrollListener()
-  },
-  beforeDestroy () {
-    // 移除滚动事件监听
-    this.removeScrollListener()
+  import scroll from './mixins/normal'
+
+  export default {
+    name: 'd2-container-card',
+    mixins: [
+      scroll
+    ],
+    mounted() {
+      // 增加滚动事件监听
+      this.addScrollListener()
+    },
+    beforeDestroy() {
+      // 移除滚动事件监听
+      this.removeScrollListener()
+    }
   }
-}
 </script>

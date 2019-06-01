@@ -22,9 +22,8 @@
     <javaClientGenerator type="XMLMAPPER" targetPackage="rms.demo.dao" targetProject="src/main/java" />
 
 
-    <table tableName="sys_user" />
-    <table tableName="role" />
-    <table tableName="permission" />
+    <table tableName="employee" />
+
 
   </context>
 

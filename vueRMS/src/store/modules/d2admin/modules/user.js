@@ -10,17 +10,17 @@ export default {
      * @param {Object} state vuex state
      * @param {*} info info
      */
-    set ({ state, dispatch }, info) {
+    set({state, dispatch}, info) {
       return new Promise(async resolve => {
         // store 赋值
-        state.info = info
+        state.info = info;
         // 持久化
         await dispatch('d2admin/db/set', {
           dbName: 'sys',
           path: 'user.info',
           value: info,
           user: true
-        }, { root: true })
+        }, {root: true});
         // end
         resolve()
       })
@@ -29,7 +29,7 @@ export default {
      * @description 从数据库取用户数据
      * @param {Object} state vuex state
      */
-    load ({ state, dispatch }) {
+    load({state, dispatch}) {
       return new Promise(async resolve => {
         // store 赋值
         state.info = await dispatch('d2admin/db/get', {
@@ -37,7 +37,7 @@ export default {
           path: 'user.info',
           defaultValue: {},
           user: true
-        }, { root: true })
+        }, {root: true});
         // end
         resolve()
       })

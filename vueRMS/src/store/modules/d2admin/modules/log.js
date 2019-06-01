@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { get, toString } from 'lodash'
+import {get, toString} from 'lodash'
 import util from '@/libs/util.js'
 
 export default {
@@ -13,14 +13,14 @@ export default {
      * @description 返回现存 log (all) 的条数
      * @param {*} state vuex state
      */
-    length (state) {
+    length(state) {
       return state.list.length
     },
     /**
      * @description 返回现存 log (error) 的条数
      * @param {*} state vuex state
      */
-    lengthError (state) {
+    lengthError(state) {
       return state.list.filter(l => l.type === 'error').length
     }
   },
@@ -32,7 +32,7 @@ export default {
      * @param {Object} param vm {Object} vue 实例
      * @param {Object} param info {String} 信息
      */
-    add ({ state, rootState }, { type, err, vm, info }) {
+    add({state, rootState}, {type, err, vm, info}) {
       // store 赋值
       state.list.push(Object.assign({
         // 记录类型
@@ -66,7 +66,7 @@ export default {
      * @description 清空日志
      * @param {Object} state vuex state
      */
-    clean (state) {
+    clean(state) {
       // store 赋值
       state.list = []
     }
