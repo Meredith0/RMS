@@ -10,7 +10,7 @@ import rms.demo.config.JWT.JwtTokenProvider;
 import rms.demo.config.SpringBoot_Security.CustomPasswordEncoder;
 import rms.demo.dao.SysUserMapper;
 import rms.demo.domain.SysUser;
-import rms.demo.exception.CustomException;
+import rms.demo.exception.BaseException;
 
 /**
  * @author : Meredith
@@ -21,38 +21,36 @@ import rms.demo.exception.CustomException;
 public class UserService {
 
     @Autowired
-        SysUserMapper userMapper;
+    SysUserMapper userMapper;
 
-        @Autowired
-        CustomPasswordEncoder customPasswordEncoder;
+    @Autowired
+    CustomPasswordEncoder customPasswordEncoder;
 
-        @Autowired
-        private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-        @Autowired
-        private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private CustomPasswordEncoder passwordEncoder;
 
-        public String signin(String username, String password) {
-            try {
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-                return jwtTokenProvider.createToken(username, userMapper.findRoleByUsername(username).getRoles());
-            } catch (AuthenticationException e) {
-                throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+    public String signin(String username, String password) throws BaseException {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return jwtTokenProvider.createToken(username, userMapper.findRoleByUsername(username).getRoles());
+        } catch (AuthenticationException e) {
+            throw new BaseException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Invalid username/password supplied");
         }
+    }
 
-        public String signup(SysUser user) {
-            if (!userMapper.existByUsername(user.getUsername())) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-                userMapper.insert(user);
-                return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-            } else {
-                throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+    public String signup(SysUser user) throws BaseException {
+        if (!userMapper.existByUsername(user.getUsername())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userMapper.insert(user);
+            return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+        } else {
+            throw new BaseException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Username is already in use");
         }
-
-
+    }
 }

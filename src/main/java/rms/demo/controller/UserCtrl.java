@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import rms.demo.bean.RespBean;
+import rms.demo.exception.BaseException;
 import rms.demo.service.UserService;
 import rms.demo.utils.UserUtil;
 
@@ -23,7 +24,7 @@ public class UserCtrl {
     UserService userService;
 
     @RequestMapping(value = "/signin",method =RequestMethod.POST)
-    public Map<String,String> login(@RequestBody Map<String,String>userDetail) {
+    public Map<String,String> login(@RequestBody Map<String,String>userDetail) throws BaseException {
         Map<String, String> map = new HashMap<>();
         String username = userDetail.get("username");
         String password = userDetail.get("password");
@@ -35,7 +36,7 @@ public class UserCtrl {
     }
 
 
-    @RequestMapping(value = "hello", method = RequestMethod.GET)
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String Auth() {
         return "HELLO";
     }

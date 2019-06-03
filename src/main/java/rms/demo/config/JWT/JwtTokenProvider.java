@@ -19,7 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import rms.demo.domain.Role;
-import rms.demo.exception.CustomException;
+import rms.demo.exception.BaseException;
 import rms.demo.service.SpringSecurity.UserDetailsServiceImpl;
 import rms.demo.utils.Base64EncodeUtil;
 
@@ -58,7 +58,7 @@ public class JwtTokenProvider {
 
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth",
-            roles.stream().map(s -> new SimpleGrantedAuthority(s.getRoleName())).filter(Objects :: nonNull).collect(Collectors.toList()));
+            roles.stream().map(s -> new SimpleGrantedAuthority(s.getRoleName())).collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -101,12 +101,12 @@ public class JwtTokenProvider {
      * @param token
      * @return
      */
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws BaseException {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new BaseException( HttpStatus.INTERNAL_SERVER_ERROR.value(),"Expired or invalid JWT token");
         }
     }
 }

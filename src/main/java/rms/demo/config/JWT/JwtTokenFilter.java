@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import rms.demo.exception.CustomException;
+import rms.demo.exception.BaseException;
 
 /**
  * @author : Meredith
@@ -36,10 +36,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        } catch (CustomException ex) {
+        } catch (BaseException ex) {
             //this is very important, since it guarantees the user is not authenticated at all
             SecurityContextHolder.clearContext();
-            httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
+            httpServletResponse.sendError(ex.getCode(), ex.getMessage());
             return;
         }
 

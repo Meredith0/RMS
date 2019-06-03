@@ -3,11 +3,13 @@ package rms.demo.config.SpringBoot_Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.cors.CorsUtils;
 import rms.demo.config.JWT.JwtTokenFilterConfigurer;
 import rms.demo.config.JWT.JwtTokenProvider;
 
@@ -27,20 +29,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()//允许跨域
+        http.cors().and()//apply rms.demo.config.CorsConfig
+            .csrf().disable()//允许普通请求跨域
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//禁用session
             .and()
             //允许访问以下路径
             .authorizeRequests()
             .antMatchers("/signin").permitAll()
             .antMatchers("/signup").permitAll()
+            .requestMatchers(CorsUtils :: isPreFlightRequest).permitAll()
+            .antMatchers(HttpMethod.OPTIONS).permitAll()//不拦截option请求
             //其他的都必须进过授权
             .anyRequest().authenticated();
 
+        http.headers().cacheControl();// 禁用缓存
+
         http.exceptionHandling().accessDeniedPage("/error/access_deny");
 
-        // Apply JWT
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));// Apply JWT
     }
 
     /**
@@ -55,7 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/configuration/**")//
             .antMatchers("/webjars/**")//
             .antMatchers("/public")
-
             // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
             .and()
             .ignoring()

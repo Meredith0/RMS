@@ -1,45 +1,38 @@
 package rms.demo.bean;
 
+import java.util.Objects;
 import lombok.Builder;
+import lombok.Data;
 
 /**
  * @author : Meredith
  * @date : 2019-05-23 21:44
  * @description : 返回json
  */
+@Data
 @Builder
 public class RespBean {
-    private Integer status;
-    private String msg;
-    private Object obj;
-    private String token;
 
-    //
-    // public Integer getStatus() {
-    //
-    //     return status;
-    // }
-    //
-    // public RespBean setStatus(Integer status) {
-    //     this.status = status;
-    //     return this;
-    // }
-    //
-    // public String getMsg() {
-    //     return msg;
-    // }
-    //
-    // public RespBean setMsg(String msg) {
-    //     this.msg = msg;
-    //     return this;
-    // }
-    //
-    // public Object getObj() {
-    //     return obj;
-    // }
-    //
-    // public RespBean setObj(Object obj) {
-    //     this.obj = obj;
-    //     return this;
-    // }
+    private int status;
+    private String msg;
+    private Object data;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RespBean)) {
+            return false;
+        }
+        RespBean result = (RespBean) o;
+        return status == result.status
+                   && Objects.equals(msg, result.msg)
+                   && Objects.equals(data, result.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, msg, data);
+    }
 }
