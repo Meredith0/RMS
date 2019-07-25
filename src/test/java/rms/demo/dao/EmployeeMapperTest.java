@@ -28,4 +28,10 @@ class EmployeeMapperTest {
         List<Employee> employees = mapper.selectByExample(example);
         System.out.println(employees);
     }
+
+    @Test
+    void test02 () {
+        List<Employee> list = mapper.selectLimited(10, 10);
+        System.out.println(list);
+    }
 }

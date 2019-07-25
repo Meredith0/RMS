@@ -21,10 +21,13 @@ public class EmpService {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    public List<Employee> getAllEmployee() {
+    public List<Employee> getAllEmployeeLimited(int offset, int count) {
+        return employeeMapper.selectLimited(offset,count);
+    }
+
+    public int getTotalEmp () {
         EmployeeExample example = new EmployeeExample();
-        example.createCriteria();
-        return employeeMapper.selectByExample(example);
+        return employeeMapper.countByExample(example);
     }
 
     public int addEmp(String empName, String empAddress, String date){

@@ -128,7 +128,7 @@
   <select id = "findPermissionByRoleId" resultType = "rms.demo.domain.Permission">
     SELECT permission_name
     FROM role
-           INNER JOIN role_permission ON ROLE.role_id = role_permission.role_id
+           INNER JOIN role_permission ON role.role_id = role_permission.role_id
            INNER JOIN permission ON role_permission.permission_id = permission.permission_id
     WHERE role.role_id in
     <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">

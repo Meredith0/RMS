@@ -22,12 +22,24 @@ import rms.demo.service.EmpService;
 @RestController()
 public class EmpCtrl {
 
+    private static final int PAGE_COUNT = 20;//分页大小
     @Autowired
     EmpService empService;
 
-    @RequestMapping(name = "/emp", method = RequestMethod.GET)
-    public List<Employee> showEmp() {
-        return empService.getAllEmployee();
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/emp", method = RequestMethod.GET)
+    public List<Employee> showEmp(@RequestParam int page) {
+        int offset = (page-1) * PAGE_COUNT;
+        return empService.getAllEmployeeLimited(offset, PAGE_COUNT);
+    }
+
+    @RequestMapping (value = "/total",method = RequestMethod.GET)
+    public int totalEmp () {
+        return empService.getTotalEmp();
     }
 
     /**
@@ -36,7 +48,7 @@ public class EmpCtrl {
      * @throws Exception
      */
     @ResponseStatus(value = HttpStatus.NO_CONTENT)//204
-    @RequestMapping(name = "/emp", method = RequestMethod.POST)
+    @RequestMapping(value = "/emp", method = RequestMethod.POST)
     public void addEmp(@RequestBody Map<String,String> empDetails) throws Exception {
         String empName = empDetails.get("empName");
         String empAddress = empDetails.get("empAddress");
@@ -46,7 +58,7 @@ public class EmpCtrl {
         }
     }
 
-    @RequestMapping(name = "/emp",method = RequestMethod.PUT)
+    @RequestMapping(value = "/emp",method = RequestMethod.PUT)
     public RespBean updateEmp(@RequestBody Map<String, String> empDetails) {
         String id = empDetails.get("id");
         String empName = empDetails.get("empName");
@@ -63,7 +75,7 @@ public class EmpCtrl {
         }
     }
 
-    @RequestMapping(name = "/emp",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/emp",method = RequestMethod.DELETE)
     public RespBean deleteEmp(@RequestParam String empId) {
         int i = empService.deleteEmp(Integer.valueOf(empId));
         if (i == 1) {
