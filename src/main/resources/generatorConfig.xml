@@ -20,11 +20,7 @@
     <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />
 
     <javaClientGenerator type="XMLMAPPER" targetPackage="rms.demo.dao" targetProject="src/main/java" />
-
-
-    <table tableName="employee" />
-
-
+    <table tableName="role" />
   </context>
 
 </generatorConfiguration>

@@ -1,15 +1,12 @@
 package rms.demo.dao;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import rms.demo.domain.Permission;
-import rms.demo.domain.Role;
 import rms.demo.domain.SysUser;
 import rms.demo.domain.SysUserExample;
 
@@ -34,38 +31,19 @@ class SysUserMapperTest {
 
     }
 
+
     @Test
     void test01(){
-       List<SysUser> user = userMapper.findUserAndRoleByUsername("张三");
-        //System.out.println(user.get(0)+"   "+user.get(1));
-        System.out.println(user.toString());
+       userMapper.listRoleById(1).forEach(System.out::println);
     }
 
     @Test
-    void test02(){
-        SysUser user = userMapper.findRoleById(1);
+    void test03 () {
+         var user = userMapper.findRoleByUserId("1");
         System.out.println(user);
     }
-
     @Test
-    void test03(){
-        List<SysUser> userAndRole = userMapper.findUserAndRoleByUsername("张三");
-
-        //获取角色
-        List<Role> roles = userAndRole.get(0).getRoles();
-
-        System.out.println(roles);
-        //获取角色的role_id
-        List<Integer> ids = roles.stream().map(Role::getRoleId).collect(Collectors.toList());
-
-        //if (user.isPresent()) {
-        List<Permission> permissions = roleMapper.findPermissionByRoleId(ids);
-
-        permissions.forEach(System.out::println);
-    }
-
-    @Test
-    void test04(){
-        System.out.println(userMapper.existByUsername("张三1"));
+    void test02 () {
+        SysUser userAndRoleByUserId = userMapper.findUserAndRoleByUsername("张三");
     }
 }

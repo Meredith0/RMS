@@ -4,7 +4,7 @@
 <mapper namespace = "rms.demo.dao.SysUserMapper">
   <resultMap id = "BaseResultMap" type = "rms.demo.domain.SysUser">
     <id column = "id" jdbcType = "INTEGER" property = "id"/>
-    <result column = "username" jdbcType = "CHAR" property = "username"/>
+    <result column = "username" jdbcType = "CHAR" javaType="string" property = "username"/>
     <result column = "password" jdbcType = "CHAR" property = "password"/>
   </resultMap>
   <sql id = "Example_Where_Clause">
@@ -131,6 +131,11 @@
       </if>
     </trim>
   </insert>
+  <insert id = "insertUserAndGetId" keyProperty="id" useGeneratedKeys="true" parameterType="rms.demo.domain.SysUser">
+    insert into sys_user (username, password)
+    values (#{username},#{password});
+  </insert>
+
   <select id = "countByExample" parameterType = "rms.demo.domain.SysUserExample"
     resultType = "java.lang.Integer">
     select count(*) from sys_user
@@ -140,49 +145,46 @@
   </select>
 
   <resultMap id = "user_role_result" type = "rms.demo.domain.SysUser">
-    <id property = "username" column = "a"/>
+    <id property = "id" column = "id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+    <result property = "username" column = "username"/>
     <result property = "password" column = "password"/>
     <!--角色集合-->
-    <collection property = "roles" ofType = "rms.demo.domain.Role">
-      <id property = "roleId" column = "role_id"/>
-      <result property = "roleName" column = "role_name"/>
+    <collection property = "roles" ofType = "rms.demo.domain.Role" >
+      <id property = "roleId" column = "role_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+      <result property = "role" column = "role"/>
     </collection>
   </resultMap>
   <select id = "findUserAndRoleByUsername" resultMap = "user_role_result" parameterType = "string">
-    SELECT sys_user.username, sys_user.password, role.role_id, role.role_name
+    SELECT id,username, password, role.role_id, role
     FROM sys_user
            JOIN user_role ON user_role.user_id = sys_user.id
            JOIN role ON role.role_id = user_role.role_id
     WHERE sys_user.username = #{username};
   </select>
 
-  <resultMap id = "findRoleById" type = "rms.demo.domain.SysUser">
-    <id property = "username" column = "username" jdbcType = "CHAR" javaType = "String"/>
-    <result property = "password" column = "password" jdbcType = "CHAR" javaType = "String"/>
-  </resultMap>
-  <select id = "findRoleById" resultMap = "findRoleById">
-    SELECT sys_user.username, sys_user.password
+
+  <select id = "listRoleById"  resultType="rms.demo.domain.Role">
+    SELECT role.*
     FROM sys_user
            JOIN user_role ON user_role.user_id = sys_user.id
            JOIN role ON role.role_id = user_role.role_id
     WHERE sys_user.id = #{id};
   </select>
 
-
   <resultMap id = "role_result" type = "rms.demo.domain.SysUser">
-    <id property = "username" column = "a"/>
+    <id property = "username" column = "username" javaType="string" jdbcType="CHAR"/>
     <!--角色集合-->
     <collection property = "roles" ofType = "rms.demo.domain.Role">
       <id property = "roleId" column = "role_id"/>
-      <result property = "roleName" column = "role_name"/>
+      <result property = "role" column = "role"/>
     </collection>
   </resultMap>
-  <select id = "findRoleByUsername" resultMap = "role_result">
-    SELECT username AS a, role.role_id, role.role_name
+  <select id = "findRoleByUserId" resultMap = "role_result">
+    SELECT username, role.role_id, role.role
     FROM sys_user
            RIGHT JOIN user_role ON user_role.user_id = sys_user.id
            RIGHT JOIN role ON role.role_id = user_role.role_id
-    WHERE sys_user.username = #{username}
+    WHERE sys_user.id = #{userId}
   </select>
 
   <select id = "existByUsername" resultType = "boolean">
@@ -197,6 +199,21 @@
     FROM sys_user
     WHERE username = #{username}
     ]]>
+  </select>
+  <select id = "findById" resultType = "rms.demo.domain.SysUser">
+    SELECT * FROM sys_user WHERE id=#{id}
+  </select>
+
+  <select id = "listUserAndRole" resultMap="user_role_result">
+    SELECT * from sys_user JOIN user_role ON id=user_id JOIN role ON role.role_id=user_role.role_id
+  </select>
+
+  <select id = "searchByUsername" resultMap="user_role_result" >
+    SELECT id,username, password, role.role_id, role
+    FROM sys_user
+           JOIN user_role ON user_role.user_id = sys_user.id
+           JOIN role ON role.role_id = user_role.role_id
+    WHERE sys_user.username LIKE #{username};
   </select>
 
   <update id = "updateByExampleSelective" parameterType = "map">

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import rms.demo.bean.RespBean;
+import rms.demo.common.RespBean;
 import rms.demo.domain.Employee;
 import rms.demo.service.EmpService;
 
 /**
  * @author : Meredith
  * @date : 2019-06-02 09:41
- * @description :
+ * @description : 员工管理模块, 需要emp权限
  */
 @RestController()
 public class EmpCtrl {

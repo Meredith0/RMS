@@ -1,4 +1,4 @@
-package rms.demo.bean;
+package rms.demo.common;
 
 import java.util.Objects;
 import lombok.Builder;

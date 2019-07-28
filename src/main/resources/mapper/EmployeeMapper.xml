@@ -142,7 +142,7 @@
     </if>
   </select>
   <select id = "selectLimited" resultType = "rms.demo.domain.Employee">
-    SELECT id, name, date, address
+    SELECT employee., name, date, address
     FROM employee LIMIT  #{offset},#{count}
   </select>
   <update id="updateByExampleSelective" parameterType="map">

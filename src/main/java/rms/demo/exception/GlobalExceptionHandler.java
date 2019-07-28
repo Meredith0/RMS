@@ -13,7 +13,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import rms.demo.bean.RespBean;
+import rms.demo.common.RespBean;
 import org.apache.commons.lang3.StringUtils;
 /**
  * @author : Meredith

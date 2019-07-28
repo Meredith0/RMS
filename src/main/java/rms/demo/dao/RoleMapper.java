@@ -1,20 +1,20 @@
 package rms.demo.dao;
 
 import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import rms.demo.domain.Permission;
 import rms.demo.domain.Role;
 import rms.demo.domain.RoleExample;
 
-@Mapper
 public interface RoleMapper {
 
-    List<Permission> findPermissionByRoleId(@Param("ids") List<Integer> ids );
+    List<Permission> listPermissionByRoleId (Integer id);
 
     int countByExample(RoleExample example);
 
     int deleteByExample(RoleExample example);
+
+    Integer insertRoleAndGetId (String role);
 
     int insert(Role record);
 

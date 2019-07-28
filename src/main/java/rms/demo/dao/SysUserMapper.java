@@ -4,18 +4,24 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.transaction.annotation.Transactional;
+import rms.demo.domain.Role;
 import rms.demo.domain.SysUser;
 import rms.demo.domain.SysUserExample;
 
 @Mapper
 public interface SysUserMapper {
 
-    List<SysUser> findUserAndRoleByUsername(String username);
+    SysUser findUserAndRoleByUsername(String username);
 
-    SysUser findRoleById(int id);
+    SysUser findById (Integer id);
 
-    SysUser findRoleByUsername(String username);
+    List<Role> listRoleById(int id);
+
+    SysUser findRoleByUserId(String id);
+
+    List<SysUser> listUserAndRole ();
+
+    int insertUserAndGetId (SysUser user);
 
     @Select("SELECT * FROM sys_user")
     List<SysUser> selectAll();
@@ -46,4 +52,7 @@ public interface SysUserMapper {
     int updateByPrimaryKeySelective(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
+
+    List<SysUser> searchByUsername (String username);
+
 }

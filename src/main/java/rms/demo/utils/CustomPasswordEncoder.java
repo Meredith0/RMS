@@ -1,4 +1,4 @@
-package rms.demo.config.SpringBoot_Security;
+package rms.demo.utils;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;

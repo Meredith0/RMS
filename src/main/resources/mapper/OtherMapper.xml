@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.OtherMapper">
+  <insert id = "insertUser_Role">
+    INSERT INTO user_role(user_id, role_id) VALUES (#{userid}, #{roleid})
+  </insert>
+  <update id = "updateUser_Role">
+    UPDATE user_role SET role_id=#{roleid} where user_id=#{userid}
+  </update>
+  <delete id = "deleteUser_RoleByUserid">
+    DELETE FROM user_role WHERE user_id=#{id}
+  </delete>
+</mapper>
