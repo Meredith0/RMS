@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * @description : 全局异常处理类
  */
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends Throwable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 

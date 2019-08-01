@@ -41,6 +41,7 @@ public class UserCtrl {
         String token = authService.login(username, password);
         map.put("token", token);
         map.put("username", UserService.username);
+        map.put("auth", UserService.auth);
         return map;
     }
 

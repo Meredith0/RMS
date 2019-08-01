@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.SalaryMapper">
+    <!--查找所有工资信息-->
+    <select id="selectEmpEid" resultType="rms.demo.domain.Employee">
+        select eid,ename
+        from employee
+        where eid=#{xxx}
+    </select>
+    <resultMap id="salarymap" type="rms.demo.domain.Salary">
+        <id column="sid" property="sid"/>
+        <result column="eid" property="eid"/>
+        <result column="base" property="base"/>
+        <result column="date" property="date"/>
+        <result column="bonus" property="bonus"/>
+        <association property="employee"
+                     javaType="rms.demo.domain.Employee"
+                     select="selectEmpEid"
+                     column="eid"
+                     />
+
+    </resultMap>
+    <select id="selectSalaryAll" resultMap="salarymap">
+        select * from salary
+    </select>
+    <!--插入数据-->
+    <insert id="insertSalary">
+        insert salary(sid,eid,base,date,bonus)value (#{sid},#{eid},#{base},#{date},#{bonus})
+    </insert>
+    <!--根据单号查询-->
+    <select id="selectBySalary"  resultMap="salarymap">
+        select * from salary where sid=#{sid}
+    </select>
+    <!--修改工资-->
+    <update id="updateSalary">
+        update salary set eid=#{eid},base=#{base},date=#{date},bonus=#{bonus} where sid=#{sid}
+    </update>
+    <!--删除工资信息-->
+    <delete id="deleteSalary">
+        delete from salary where sid=#{sid}
+    </delete>
+    <!--根据单号查询-->
+    <select id="selectBySalary1" resultMap="salarymap">
+        select * from salary where sid=#{sid}
+    </select>
+    <!--模糊查询-->
+    <select id="selectSalaryByParm" resultMap="iffind">
+    select sid,salary.eid,employee.eid,employee.ename,base,date,bonus
+    from employee,salary
+    <where>
+        salary.eid = employee.eid
+        <!--<if test="ename!=null and ename!=''">-->
+        <!--and employee.ename like "%"#{ename}"%"-->
+        <!--</if>-->
+        <if test="sid!=null and sid!=''">
+            and sid = #{sid}
+        </if>
+        <if test="base!=null and base!=''">
+            and base = #{base}
+        </if>
+        <if test="eid!=null and eid!=''">
+            and employee.eid = #{eid}
+        </if>
+        <!--<if test="bonus!=null and bonus!=''">-->
+            <!--and bonus = #{bonus}-->
+        <!--</if>-->
+    </where>
+</select>
+    <resultMap id="iffind" type="rms.demo.domain.Salary">
+        <id column="sid" property="sid"/>
+        <result column="eid" property="eid"/>
+        <result column="base" property="base"/>
+        <result column="date" property="date"/>
+        <result column="bonus" property="bonus"/>
+        <association property="employee"  javaType="rms.demo.domain.Employee">
+            <id property="eid"  column="eid"/>
+            <result property="ename" column="ename"/>
+        </association>
+    </resultMap>
+
+</mapper>

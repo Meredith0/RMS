@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.AfficheMapper">
+  <select id="selectAfficheAll" resultType="rms.demo.domain.Affiche">
+    select * from affiche
+  </select>
+    <select id="selectByAid" resultType="rms.demo.domain.Affiche">
+    select * from affiche where aid = #{xxx}
+  </select>
+  <select id="search" resultType="rms.demo.domain.Affiche">
+    select * from affiche where 1 = 1
+    <if test="amessage!=null and amessage!=''">
+      and amessage like "%"#{amessage}"%"
+    </if>
+    <if test="adate!=null and adate!=''">
+      and adate = #{adate}
+    </if>
+  </select>
+  <insert id="insertAffiche">
+    insert into affiche(amessage,adate) values(#{amessage},#{adate})
+  </insert>
+    <update id="updateAffiche">
+    update affiche set amessage = #{amessage}, adate = #{adate} where aid = #{aid}
+  </update>
+    <delete id="delAffiche">
+    delete from affiche where aid = #{aid}
+  </delete>
+</mapper>

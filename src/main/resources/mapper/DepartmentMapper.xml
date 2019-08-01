@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.DepartmentMapper">
+  <!--查找所有的部门-->
+  <select id="selAllDept" resultType="rms.demo.domain.Department">
+    select * from  department
+  </select>
+  <!--按照部门的id进行索引-->
+  <select id="selectByDeptNo" resultType="rms.demo.domain.Department">
+    select * from department where did=#{did}
+  </select>
+  <!--根据部门的名称进行查找-->
+  <select id="selectByDeptName" resultType="rms.demo.domain.Department">
+    select * from department where dname like #{name} '%'
+  </select>
+  <!--根据部门的主管进行查找-->
+  <select id="selectByDeptManager" resultType="rms.demo.domain.Department">
+    select * from department where dmanager=#{dmanager}
+  </select>
+  <!-- 添加部门-->
+  <insert id="insDept">
+    insert into department (dname,dmanager) values (#{dname},#{dmanager})
+  </insert>
+  <!--删除部门-->
+  <delete id="delDept">
+    DELETE FROM department where did = #{did}
+  </delete>
+  <!--修改/更新部门的信息,根据id进行修改-->
+  <update id="upDept">
+    update department set dname = #{dname},dmanager=#{dmanager} where did=#{did}
+  </update>
+  <!--当删除部门的时候，将部门所属员工全部删除-->
+  <delete id="delAll">
+    DELETE FROM employee where did = #{did}
+  </delete>
+</mapper>

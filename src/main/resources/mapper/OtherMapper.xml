@@ -10,4 +10,38 @@
   <delete id = "deleteUser_RoleByUserid">
     DELETE FROM user_role WHERE user_id=#{id}
   </delete>
+  <delete id = "deleteTest">
+    DELETE employee FROM employee WHERE pid in (SELECT pid FROM position WHERE position.pid=#{id})
+  </delete>
+
+
+  <select id = "ageReport" resultType = "java.lang.String">
+    SELECT count(name) as count
+    FROM (
+    SELECT CASE
+    WHEN age  &gt;  18 and age  &lt; 22 THEN '0'
+    WHEN age  &lt;  26 THEN '1'
+    WHEN age  &lt;  30 THEN '2'
+    WHEN age  &lt;  34 THEN '3'
+    WHEN age  &lt;  38 THEN '4'
+    WHEN age  &lt;  42 THEN '5'
+    ELSE '6'
+    END AS name
+    FROM (
+    SELECT year(curdate())-substr(birthday, 1, 4) AS age
+    FROM employee
+    WHERE birthday is NOT NULL
+    ) t
+    ) t GROUP BY name ORDER BY name
+  </select>
+  <select id = "atworkCount" resultType = "java.lang.Integer">
+    select count(atwork)
+    from checkstate
+    WHERE atwork=1
+  </select>
+  <select id = "noAtWorkReport" resultType = "java.lang.Integer">
+    select count(atwork)
+    from checkstate
+    WHERE atwork=0
+  </select>
 </mapper>

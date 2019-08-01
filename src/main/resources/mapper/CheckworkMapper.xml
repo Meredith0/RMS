@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.CheckworkMapper">
+  <select id="selectCheckWorkAll" resultType="rms.demo.domain.Checkwork">
+    select * from checkworker
+  </select>
+  <select id="selectByCid" resultType="rms.demo.domain.Checkwork">
+    select * from checkworker where cid = #{xxx}
+  </select>
+  <select id="search" resultType="rms.demo.domain.Checkwork">
+    select * from checkworker where 1 = 1
+    <if test="eid!=null and eid!=''">
+      and eid like "%"#{eid}"%"
+    </if>
+    <if test="itime!=null and itime!=''">
+      and itime = #{itime}
+    </if>
+    <if test="otime!=null and otime!=''">
+      and otime = #{otime}
+    </if>
+    <if test="holiday!=-1">
+      and holiday = #{holiday}
+    </if>
+  </select>
+  <insert id="insertCheckwork">
+    insert into checkworker(eid,itime,otime,holiday) values(#{eid},#{itime},#{otime},#{holiday})
+  </insert>
+  <update id="updateCheckwork">
+    update checkworker set itime = #{itime}, otime = #{otime}, holiday = #{holiday} where cid = #{cid}
+  </update>
+  <delete id="delCheckwork">
+    delete from checkworker where cid = #{cid}
+  </delete>
+</mapper>

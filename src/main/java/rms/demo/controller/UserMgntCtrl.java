@@ -23,19 +23,19 @@ public class UserMgntCtrl {
     UserMgntService service;
 
     @RequestMapping (value = "/hello", method = RequestMethod.GET)
-    public String authTest() {
+    public String authTest () {
         return "hello from user management";
     }
 
-    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    @RequestMapping (value = "/show", method = RequestMethod.GET)
     public List<Object> showUsers () {
         return service.showUsers();
     }
 
     //新增用户
     @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public void addUser(String username, String password, String role) throws Exception {
+    @RequestMapping (value = "/user", method = RequestMethod.POST)
+    public void addUser (String username, String password, String role) throws Exception {
 
         if (service.addUser(username, password, role) != 1) {
             throw new Exception("insert user failed");
@@ -44,24 +44,23 @@ public class UserMgntCtrl {
 
     //修改用户
     @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public void updateUser(String id,String username, String password, String role) throws Exception {
+    @RequestMapping (value = "/user", method = RequestMethod.PUT)
+    public void updateUser (String id, String username, String password, String role) throws Exception {
 
-        if (service.updateUser(id,username, password, role) != 2) {
+        if (service.updateUser(id, username, password, role) != 2) {
             throw new Exception("update user failed");
         }
     }
 
     //删除用户
     @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
-    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
-    public void deleteUser(String id) throws Exception {
+    @RequestMapping (value = "/user", method = RequestMethod.DELETE)
+    public void deleteUser (String id) throws Exception {
 
         service.deleteUser(id);
     }
 
-
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping (value = "/search", method = RequestMethod.GET)
     public List<Object> searchUsers (String username) {
         return service.searchUsers(username);
     }

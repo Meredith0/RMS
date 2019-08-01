@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.EmpMapper">
+    <!--查找所有员工-->
+    <select id="selectEmpAll" resultType="rms.demo.domain.Employee">
+        select * from Employee
+    </select>
+
+    <insert id = "addEmp" parameterType="rms.demo.domain.Employee">
+        insert into employee (ename, sex, workdate, did, pid, identity, phone, address, birthday)
+        values (#{ename}, #{sex}, #{workdate}, #{did}, #{pid}, #{identity},#{phone}, #{address}, #{birthday});
+    </insert>
+
+    <resultMap id = "AllEmpMap" type = "rms.demo.domain.Employee">
+        <id column = "eid" property = "eid"/>
+        <result column = "sex" property = "sex" javaType="String" jdbcType="INTEGER" typeHandler = "rms.demo.utils.GenderEnumUtil"/>
+    </resultMap>
+  <select id = "listAllEmp" resultMap="AllEmpMap">
+      SELECT *
+      FROM employee
+  </select>
+</mapper>

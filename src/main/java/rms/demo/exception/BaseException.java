@@ -22,7 +22,6 @@ public class BaseException extends Exception {
     public BaseException(int code, Throwable throwable) {
         super(throwable);
         this.code = code;
-
     }
 
     public BaseException(int code, String errorMessage) {

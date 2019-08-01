@@ -18,6 +18,7 @@ public class UserService  implements UserDetailsService {
     @Autowired
     SysUserMapper userMapper;
 
+    public static String auth;
     public static String username;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -26,6 +27,7 @@ public class UserService  implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
+        auth = user.getRoles().get(0).getRole();
         username = user.getUsername();
         return user;
     }

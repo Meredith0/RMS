@@ -1,88 +1,95 @@
 package rms.demo.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import rms.demo.common.RespBean;
 import rms.demo.domain.Employee;
+import rms.demo.domain.MsgEs;
 import rms.demo.service.EmpService;
 
 /**
  * @author : Meredith
- * @date : 2019-06-02 09:41
- * @description : 员工管理模块, 需要emp权限
+ * @date : 2019-07-31 16:45
+ * @description : 员工管理
  */
-@RestController()
+@RestController
+@RequestMapping ("/emp")
+@PreAuthorize ("hasAnyAuthority('admin','dept')")
 public class EmpCtrl {
 
-    private static final int PAGE_COUNT = 20;//分页大小
     @Autowired
-    EmpService empService;
+    private EmpService empService;
 
     /**
-     * 分页查询
-     * @param page
-     * @return
+     * 列出所有员工信息，不分页
      */
-    @RequestMapping(value = "/emp", method = RequestMethod.GET)
-    public List<Employee> showEmp(@RequestParam int page) {
-        int offset = (page-1) * PAGE_COUNT;
-        return empService.getAllEmployeeLimited(offset, PAGE_COUNT);
+    @RequestMapping ("/listEmps")
+    @ResponseBody
+    public MsgEs doListEmp () {
+        List<Employee> list = empService.findEmpAll();
+        return MsgEs.success().add("emps", list);
     }
 
-    @RequestMapping (value = "/total",method = RequestMethod.GET)
-    public int totalEmp () {
-        return empService.getTotalEmp();
+    @RequestMapping ("show")
+    public Map<String,Object> show (@RequestParam (defaultValue = "1") int pageNo,
+                                @RequestParam (defaultValue = "5") int pageSize) {
+      PageHelper.startPage(pageNo, pageSize);
+        List<Employee> emps = empService.show();
+        int total = ((Page) emps).getPages();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("emp",emps);
+        map.put("total", total);
+        return map;
     }
 
-    /**
-     * 新增员工 成功则返回204, 否则抛异常
-     * @param empDetails 传入的员工信息
-     * @throws Exception
-     */
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)//204
-    @RequestMapping(value = "/emp", method = RequestMethod.POST)
-    public void addEmp(@RequestBody Map<String,String> empDetails) throws Exception {
-        String empName = empDetails.get("empName");
-        String empAddress = empDetails.get("empAddress");
-        String empDate = empDetails.get("empDate");
-        if (empService.addEmp(empName, empAddress, empDate) != 1) {
-            throw new Exception("insert failed");
+    @RequestMapping(value = "/thisEmp",method = RequestMethod.GET)
+    public Employee emp (Integer eid) {
+        return empService.thisEmp(eid);
+
+    }
+    @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
+    @RequestMapping (value = "emp", method = RequestMethod.POST)
+    public void addEmp (Employee emp) throws Exception {
+        if (empService.addEmp(emp) != 1) {
+            throw new Exception("add emp failed");
+        }
+    }
+    @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
+    @RequestMapping (value = "emp", method = RequestMethod.PUT)
+    public void updateEmp (Employee emp) throws Exception {
+        if (empService.updateEmp(emp) != 1) {
+            throw new Exception("update emp failed");
         }
     }
 
-    @RequestMapping(value = "/emp",method = RequestMethod.PUT)
-    public RespBean updateEmp(@RequestBody Map<String, String> empDetails) {
-        String id = empDetails.get("id");
-        String empName = empDetails.get("empName");
-        String empAddress = empDetails.get("empAddress");
-        String empDate = empDetails.get("empDate");
-
-        int empId = Integer.valueOf(id);
-        int i = empService.updateEmp(empId, empName, empAddress, empDate);
-        if (i == 1) {
-            return RespBean.builder().status(204).msg("update success").build();
-        }
-        else {
-            return RespBean.builder().status(409).msg("conflict, update failed").build();
+    @ResponseStatus (value = HttpStatus.NO_CONTENT)//204
+    @RequestMapping (value = "emp", method = RequestMethod.DELETE)
+    public void deleteEmp (int eid) throws Exception {
+        if (empService.deleteEmp(eid) != 1) {
+            throw new Exception("delete emp failed");
         }
     }
 
-    @RequestMapping(value = "/emp",method = RequestMethod.DELETE)
-    public RespBean deleteEmp(@RequestParam String empId) {
-        int i = empService.deleteEmp(Integer.valueOf(empId));
-        if (i == 1) {
-            return RespBean.builder().status(204).msg("delete success").build();
-        }
-        else {
-            return RespBean.builder().status(409).msg("conflict, delete failed").build();
-        }
+    @RequestMapping ("find")
+    public Map<String, Object> find (@RequestParam (defaultValue = "1") int pageNo,
+                                     @RequestParam (defaultValue = "5") int pageSize, String name) {
+
+        long total = PageHelper.startPage(pageNo, pageSize).getTotal();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("emp", empService.find(name));
+        map.put("totalPage", total);
+        return map;
     }
+
 }

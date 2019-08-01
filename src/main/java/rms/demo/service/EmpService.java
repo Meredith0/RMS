@@ -1,49 +1,69 @@
 package rms.demo.service;
 
-import java.rmi.server.ExportException;
-import java.sql.Date;
-import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rms.demo.dao.EmployeeMapper;
+import rms.demo.dao.DepartmentMapper;
+import rms.demo.dao.EmpMapper;
+import rms.demo.dao.PositionMapper;
 import rms.demo.domain.Employee;
-import rms.demo.domain.EmployeeExample;
+import rms.demo.exception.BaseException;
 
 /**
  * @author : Meredith
- * @date : 2019-06-02 09:39
+ * @date : 2019-07-31 16:52
  * @description :
  */
 @Service
 public class EmpService {
 
     @Autowired
-    EmployeeMapper employeeMapper;
+    private EmpMapper empMapper;
 
-    public List<Employee> getAllEmployeeLimited(int offset, int count) {
-        return employeeMapper.selectLimited(offset,count);
+    @Autowired
+    private DepartmentMapper deptMapper;
+
+    @Autowired
+    private PositionMapper positionMapper;
+
+    public List<Employee> findEmpAll () {
+        List<Employee> employees = empMapper.selectEmpAll();
+        return employees;
     }
 
-    public int getTotalEmp () {
-        EmployeeExample example = new EmployeeExample();
-        return employeeMapper.countByExample(example);
+    public List<Employee> show () {
+        return empMapper.listAllEmp();
     }
 
-    public int addEmp(String empName, String empAddress, String date){
-        Date sqlDate = java.sql.Date.valueOf(date);
-        Employee employee = Employee.builder().name(empName).address(empAddress).date(sqlDate).build();
-        return employeeMapper.insert(employee);
+    public int addEmp (Employee emp) throws BaseException {
+        validateInput(emp);
+       return empMapper.addEmp(emp);
     }
 
-    public int updateEmp(Integer empId,String empName, String empAddress, String date) {
-
-        Date sqlDate = java.sql.Date.valueOf(date);
-        Employee employee = Employee.builder().id(empId).name(empName).address(empAddress).date(sqlDate).build();
-        return employeeMapper.updateByPrimaryKeySelective(employee);
+    public int updateEmp (Employee emp) throws BaseException {
+         validateInput(emp);
+        return empMapper.updateEmp(emp);
     }
 
-    public int deleteEmp(int empId) {
-       return employeeMapper.deleteByPrimaryKey(empId);
+    public int deleteEmp (int eid)  {
+
+        return empMapper.deleteEmp(eid);
     }
+
+    public List<Employee> find (String name) {
+       return empMapper.find("%"+name+"%");
+    }
+
+    private void validateInput (Employee emp) throws BaseException {
+        int i = deptMapper.validateDeptId(emp.getDid());
+        int j = positionMapper.validatePid(emp.getPid());
+        if (i == 0 || j == 0) {
+            throw new BaseException(500, "pid or did not exist");
+        }
+    }
+
+    public Employee thisEmp (Integer eid) {
+       return empMapper.getEmpById(eid);
+    }
+
 }

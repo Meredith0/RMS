@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rms.demo.dao.CheckstateMapper">
+    <select id="selectCheckstateAll" resultType="rms.demo.domain.Checkstate">
+    select * from checkstate
+  </select>
+    <select id="selectById" resultType="rms.demo.domain.Checkstate">
+    select * from checkstate where id = #{xxx}
+  </select>
+  <select id="search" resultType="rms.demo.domain.Checkstate">
+    select * from checkstate where 1 = 1
+    <if test="eid!=null and eid!=''">
+      and eid like "%"#{eid}"%"
+    </if>
+    <if test="cyear!=null and cyear!=''">
+      and cyear = #{cyear}
+    </if>
+    <if test="cmonth!=null and cmonth!=''">
+      and cmonth = #{cmonth}
+    </if>
+    <if test="atwork!=-1">
+      and atwork = #{atwork}
+    </if>
+    <if test="late!=-1">
+      and late = #{late}
+    </if>
+    <if test="early!=-1">
+      and early = #{early}
+    </if>
+  </select>
+  <insert id="insertCheckstate">
+    insert into checkstate(eid,cyear,cmonth,atwork,late,early) values(#{eid},#{cyear},#{cmonth},#{atwork},#{late},#{early})
+  </insert>
+    <update id="updateCheckstate">
+    update checkstate set cyear = #{cyear}, cmonth = #{cmonth}, atwork = #{atwork}, late = #{late}, early = #{early} where id = #{id}
+  </update>
+    <delete id="delCheckstate">
+    delete from checkstate where id = #{id}
+  </delete>
+</mapper>
