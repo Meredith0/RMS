@@ -6,6 +6,7 @@
   <a href="https://circleci.com/gh/vuejs/vue/tree/dev"><img src="https://img.shields.io/circleci/project/github/vuejs/vue/dev.svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/l/vue.svg" alt="License"></a>
 </p>
+
 ## 界面效果图
 
 ![image](https://github.com/Meredith0/RMS/raw/master/doc/image/login.png)
