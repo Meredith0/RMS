@@ -1,0 +1,23 @@
+.my-ul{
+    padding: 15px;
+}
+.my-li{
+    list-style-type: none;
+}
+.date-title{
+    padding-left: 10px;
+}
+.my-trash{
+    float: right;
+}
+.my-pencil{
+    float: right;
+}
+.form-content{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.my-form{
+    display:inline;
+    padding-left: 20px;
+}
