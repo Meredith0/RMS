@@ -5,11 +5,11 @@
 
 ## 界面效果图
 
-![image](https://github.com/Meredith0/RMS/doc/image/login.png)
+![image](https://github.com/Meredith0/RMS/raw/master/doc/image/login.png)
 
-![image](https://github.com/Meredith0/RMS/doc/image/index.png)
+![image](https://github.com/Meredith0/RMS/raw/master/doc/image/index.png)
 
-![image](https://github.com/Meredith0/RMS/doc/image/report.png)
+![image](https://github.com/Meredith0/RMS/raw/master/doc/image/report.png)
 
 
 ## 技术栈
