@@ -33,7 +33,7 @@
     "popper.js": "^1.15.0",
     "qs": "^6.6.0",
     "screenfull": "^4.0.0",
-    "ua-parser-js": "^0.7.18",
+    "ua-parser-js": "^0.7.24",
     "v-charts": "^1.19.0",
     "vue": "^2.5.17",
     "vue-axios": "2.1.4",
